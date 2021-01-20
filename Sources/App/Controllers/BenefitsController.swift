@@ -18,7 +18,7 @@ struct BenefitsController: RouteCollection {
 
     func create(req: Request) throws -> EventLoopFuture<Benefit> {
         guard req.remoteAddress?.hostname == "127.0.0.1" else {
-            Abort(.forbidden)
+            throw Abort(.forbidden)
         }
         let benefit = try req.content.decode(BenefitEntity.self)
         return benefit.save(on: req.db).map { benefit.convert() }
@@ -26,7 +26,7 @@ struct BenefitsController: RouteCollection {
 
     func delete(req: Request) throws -> EventLoopFuture<HTTPStatus> {
         guard req.remoteAddress?.hostname == "127.0.0.1" else {
-            Abort(.forbidden)
+            throw Abort(.forbidden)
         }
         return BenefitEntity.find(req.parameters.get("id"), on: req.db)
             .unwrap(or: Abort(.notFound))

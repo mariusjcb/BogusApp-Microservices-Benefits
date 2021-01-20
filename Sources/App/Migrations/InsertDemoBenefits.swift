@@ -1,6 +1,7 @@
 import Foundation
 import Fluent
 import BogusApp_Common_Models
+import Vapor
 
 struct InsertDemoBenefits: Migration {
     let benefits: [Benefit] = [
@@ -62,6 +63,13 @@ struct InsertDemoBenefits: Migration {
         .init(id: UUID(), name: "Backlink setup", type: .text)
     ]
     
+    func prepare(on database: Database) -> EventLoopFuture<Void> {
+        return benefits
+            .map { BenefitEntity($0) }
+            .map { $0.save(on: database) }
+            .last!
+    }
+    
     func revert(on database: Database) -> EventLoopFuture<Void> {
         return benefits
             .map { elem in
@@ -71,12 +79,5 @@ struct InsertDemoBenefits: Migration {
                     .filter(.string("type"), .equal, elem.type)
                     .delete()
             }.last!
-    }
-    
-    func prepare(on database: Database) -> EventLoopFuture<Void> {
-        return benefits
-            .map { BenefitEntity($0) }
-            .map { $0.save(on: database) }
-            .last!
     }
 }
