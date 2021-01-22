@@ -24,7 +24,7 @@ x-shared_environment: &shared_environment
 
 services:
   app:
-    image: bogusapp-microservices-benefits:latest
+    image: mariusjcb/bogusapp-microservices-benefits:latest
     build:
       context: .
     environment:
