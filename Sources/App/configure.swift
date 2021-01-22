@@ -16,7 +16,6 @@ public func configure(_ app: Application) throws {
     ), as: .psql)
 
     app.migrations.add(CreateBenefit())
-//    app.migrations.add(InsertDemoBenefits())
     app.autoMigrate().whenSuccess {
         print("Migration done on Benefits service...")
     }
