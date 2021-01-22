@@ -75,4 +75,4 @@ services:
       POSTGRES_PASSWORD: vapor_password
       POSTGRES_DB: vapor_database
     expose:
-      - '5732'
+      - '5432'
